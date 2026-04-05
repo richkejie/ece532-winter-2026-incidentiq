@@ -8,7 +8,7 @@ See our [`report`](doc/final-project-group-report) for an explanation of our pro
 
 - Bence Suranyi
 - [Maanik Gogna](https://www.linkedin.com/in/maanikgogna/)
-- [Darrian Shue](www.linkedin.com/in/darrian-shue-542230212)
+- [Darrian Shue](https://www.linkedin.com/in/darrian-shue-542230212)
 - [Richard Wu](https://www.linkedin.com/in/richard-wu-5436681bb/)
 
 ## Video Demo (click on thumbnail to open video)
