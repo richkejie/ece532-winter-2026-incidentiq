@@ -13,3 +13,4 @@ This project is hosted open-source under the [MIT License](LICENSE).
 | [`sw/bluetooh-and-sd`](sw/bluetooth-and-sd) | Bluetooth and SD card processing scripts                                                                        |
 | [`sw/visualizer/`](sw/visualizer/)          | Visualizer source code                                                                                          |
 | [`systemrdl/`](systemrdl/)                  | SystemRDL files. See the [overview](systemrdl/systemrdl-crash-course.pdf) for usage instructions                |
+| [`doc/`](doc/)                              | Contains our project group report.                                                                              |
