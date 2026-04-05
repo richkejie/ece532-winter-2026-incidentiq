@@ -2,14 +2,14 @@
 
 This project is hosted open-source under the [MIT License](LICENSE).
 
+See our [`report`](doc/final-project-group-report) for an explanation of our project.
+
 ## Authors
 
 - Bence Suranyi
 - Maanik Gogna
 - Darrian Shue
 - [Richard Wu](https://www.linkedin.com/in/richard-wu-5436681bb/)
-
-See our [`report`](doc/final-project-group-report) for an explanation of our project.
 
 ## Video Demo (click on thumbnail to open video)
 
