@@ -1,8 +1,15 @@
-# ece532-incidentiq
+# ECE532: IncidentIQ
 
-This is repo for ECE532 Team No. 2: IncidentIQ
+This project is hosted open-source under the [MIT License](LICENSE).
 
-# nexys4_ddr board files (tutorial 3)
+## Repository Structure
 
-1.  copy `imports/board_files/nexys4_ddr` to `<Vivado Install Directory>/Xilinx/Vivado/<Vivado Version>/data/boards/board_files`
-2.  Alternatively, via TCL console: `set_param board.repoPaths <path to extracted board files>/board_files/` (this adds board files to current instance of Vivado)
+| Directory                          | Description                                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [`incident_iq/`](incident_iq/)     | Vivado project files, including the constraint file, block design files, SDK files, and the `.xdc` project file |
+| [`src/rtl/`](src/rtl/)             | RTL design files (imported into Vivado rather than copied, to keep the project directory clean)                 |
+| [`src/verif/`](src/verif/)         | Simulation/verification files                                                                                   |
+| [`fw_sdk/`](fw_sdk/)               | SDK projects, importable via the SDK interface                                                                  |
+| [`sw/`](sw/)                       | Bluetooth and SD card processing scripts                                                                        |
+| [`sw/visualizer/`](sw/visualizer/) | Visualizer source code                                                                                          |
+| [`systemrdl/`](systemrdl/)         | SystemRDL files. See the [overview](systemrdl/systemrdl-crash-course.pdf) for usage instructions                |
