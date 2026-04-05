@@ -2,7 +2,7 @@
 
 This project is hosted open-source under the [MIT License](LICENSE).
 
-See our [`report`](doc/final-project-group-report) for an explanation of our project.
+See our [`report`](doc/final-project-group-report.pdf) for an explanation of our project.
 
 ## Authors
 
