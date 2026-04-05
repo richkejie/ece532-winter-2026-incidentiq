@@ -6,7 +6,7 @@ See our [`report`](doc/final-project-group-report) for an explanation of our pro
 
 ## Authors
 
-- Bence Suranyi
+- [Bence Suranyi](www.linkedin.com/in/suranyibence)
 - [Maanik Gogna](https://www.linkedin.com/in/maanikgogna/)
 - [Darrian Shue](https://www.linkedin.com/in/darrian-shue-542230212)
 - [Richard Wu](https://www.linkedin.com/in/richard-wu-5436681bb/)
