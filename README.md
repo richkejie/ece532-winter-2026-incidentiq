@@ -4,7 +4,7 @@ This project is hosted open-source under the [MIT License](LICENSE).
 
 Members: Bence Suranyi, Maanik Gogna, Darrian Shue, Richard Wu.
 
-See our [`doc/final-project-group-report`](report) for an explanation of our project.
+See our [`report`](doc/final-project-group-report) for an explanation of our project.
 
 ## Video Demo (click on thumbnail to open video)
 
