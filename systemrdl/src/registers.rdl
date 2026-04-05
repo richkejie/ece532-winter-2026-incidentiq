@@ -1,0 +1,231 @@
+
+addrmap registers {
+    name = "Register Map";
+    desc = "All-Purpose Registers";
+
+    default hw = r;       // hardware can read by default
+    default sw = rw;      // software can read/write by default
+
+    /* ------------------ Data Packet Buffer ------------------ */
+    // -------------------------------------------------------------------------
+    // Data Packet Buffer Write Pointer Register
+    // Written by custom IP hardware.
+    // Read by MicroBlaze to determine how much data is available.
+    // -------------------------------------------------------------------------
+    reg data_packet_buffer_write_ptr_reg {
+        name = "Write Poitner";
+        desc = "Points to the next location the custom IP will write to.
+                Valid range: 0 to 2047.
+                Written by hardware, read by MicroBlaze.";
+
+        // upper bits unused - buffer depth is 2048 words (11 bits needed)
+        field {} RESERVED[31:11] = 0;
+        field {
+            name = "WPTR";
+            desc = "Write pointer index (word address, 0-2047)";
+            hw = w; // custom IP writes this
+            sw = r; // MicroBlaze can only read it
+        } WPTR[10:0] = 0; // reset to default of 0
+    };
+
+    // -------------------------------------------------------------------------
+    // Data Packet Buffer Read Pointer Register
+    // Written by MicroBlaze after consuming data.
+    // Read by custom IP hardware to determine how much space is available.
+    // -------------------------------------------------------------------------
+    reg data_packet_buffer_read_ptr_reg {
+        name = "Read Pointer";
+        desc = "Points to the next location MicroBlaze will read from.
+                Valid range: 0 to 2047.
+                Written by MicroBlaze, read by hardware.";
+
+        field {} RESERVED[31:11] = 0;
+        field {
+            name    = "RPTR";
+            desc    = "Read pointer index (word address, 0–2047)";
+            hw      = r;    // custom IP reads this
+            sw      = rw;   // MicroBlaze reads and writes this
+        } RPTR[10:0] = 0;
+    };
+
+    // -------------------------------------------------------------------------
+    // Data Packet Buffer Status Register
+    // Purely hardware-driven flags for MicroBlaze to poll.
+    // -------------------------------------------------------------------------
+    reg data_packet_buffer_status_reg {
+        name = "Buffer Status";
+        desc = "Hardware-driven status flags for the circular buffer.";
+
+        field {} RESERVED[31:2] = 0;
+
+        field {
+            name = "FULL";
+            desc = "Set by hardware when buffer is full.
+                    (write_ptr + 1) % 2048 == read_ptr";
+            hw   = w;
+            sw   = r;
+        } FULL[1:1] = 0;
+
+        field {
+            name = "EMPTY";
+            desc = "Set by hardware when buffer is empty.
+                    write_ptr == read_ptr";
+            hw   = w;
+            sw   = r;
+        } EMPTY[0:0] = 1;  // default to empty on reset
+    };
+
+    /* ------------------ Crash Detection Thresholds ------------------ */
+    // -------------------------------------------------------------------------
+    // Crash Detection Speed Threshold Register
+    // Determines whether to classify crash as fatal or non-fatal.
+    // -------------------------------------------------------------------------
+    reg crash_detection_speed_threshold_reg {
+        name = "Crash Detection Speed Threshold";
+        desc = "Determines whether to classify crash as fatal or non-fatal.";
+
+        field {
+            name = "THRESH";
+            desc = "Speed threshold. Units of knots
+                    above threshold: fatal
+                    below threshold: non-fatal";
+            hw   = r;
+            sw   = rw;
+        } THRESH[31:0] = 0;
+    };
+
+    // -------------------------------------------------------------------------
+    // Crash Detection Non-Fatal Acceleration Threshold Register
+    // Determines non-fatal crash acceleration limit.
+    // -------------------------------------------------------------------------
+    reg crash_detection_non_fatal_accel_threshold_reg {
+        name = "Crash Detection Non Fatal Acceleration Threshold";
+        desc = "Determines non-fatal crash acceleration limit.";
+
+        field {
+            name = "THRESH";
+            desc = "Non fatal crash acceleration threshold.
+                    units of micro Gs, 
+                    default is ~0.5G (range: +- 8G, 12 bit signed)";
+            hw   = r;
+            sw   = rw;
+        } THRESH[31:0] = 32'd125; // units of micro Gs, ~0.5G (range: +- 8G, 12 bit signed)
+    };
+
+    // -------------------------------------------------------------------------
+    // Crash Detection Fatal Acceleration Threshold Register
+    // Determines fatal crash acceleration limit.
+    // -------------------------------------------------------------------------
+    reg crash_detection_fatal_accel_threshold_reg {
+        name = "Crash Detection Fatal Acceleration Threshold";
+        desc = "Determines fatal crash acceleration limit.";
+
+        field {
+            name = "THRESH";
+            desc = "Fatal crash acceleration threshold.
+                    units of micro Gs, 
+                    default is ~0.5G (range: +- 8G, 12 bit signed)";
+            hw   = r;
+            sw   = rw;
+        } THRESH[31:0] = 32'd125; // units of micro Gs, ~0.5G (range: +- 8G, 12 bit signed)
+    };
+
+    // -------------------------------------------------------------------------
+    // Crash Detection Angular Speed Threshold Register
+    // Determines crashing angular speed limit.
+    // -------------------------------------------------------------------------
+    reg crash_detection_angular_speed_threshold_reg {
+        name = "Crash Detection Angular Speed Threshold";
+        desc = "Determines crashing angular speed limit.";
+
+        field {
+            name = "THRESH";
+            desc = "Crashing angular speed limit.
+                    units of degrees per second, 
+                    default is ~60dps (range: +- 250dps, 16bit signed)";
+            hw   = r;
+            sw   = rw;
+        } THRESH[31:0] = 32'd8000; // units of degrees per second, ~60dps (range: +- 250dps, 16bit signed)
+    };
+
+    // -------------------------------------------------------------------------
+    // Crash Detection Enable Register
+    // -------------------------------------------------------------------------
+    reg crash_detection_enable_reg {
+        name = "Crash Detection Enable";
+        desc = "Enables Crash Detection feature.";
+
+        field {} RESERVED[31:1] = 0;
+
+        field {
+            name = "EN";
+            desc = "High: enabled; Low: disabled";
+            hw   = r;
+            sw   = rw;
+        } EN[0:0] = 0; // default: disabled
+    };
+
+    // -------------------------------------------------------------------------
+    // Crash Detection State Reset Register
+    // -------------------------------------------------------------------------
+    reg crash_detection_state_reset_reg {
+        name = "Crash Detection State Reset";
+        desc = "Resets Crash Detection state.";
+
+        field {} RESERVED[31:1] = 0;
+
+        field {
+            name = "RST";
+            desc = "High: reset; Low: don't reset";
+            hw   = r;
+            sw   = rw;
+        } RST[0:0] = 0; // default: disabled
+    };
+
+    /* ------------------ Polling Module Enable ------------------ */
+    reg polling_module_en {
+        name = "Polling Module Enable";
+        desc = "Enables Polling module.";
+
+        field {} RESERVED[31:1] = 0;
+
+        field {
+            name = "EN";
+            desc = "High: enabled; Low: disabled";
+            hw   = r;
+            sw   = rw;
+        } EN[0:0] = 0; // default: disabled
+    };
+
+    /* ------------------ Data Packager Enable ------------------ */
+    reg data_packager_en {
+        name = "Data Packager Enable";
+        desc = "Enables Data Packager.";
+
+        field {} RESERVED[31:1] = 0;
+
+        field {
+            name = "EN";
+            desc = "High: enabled; Low: disabled";
+            hw   = r;
+            sw   = rw;
+        } EN[0:0] = 0; // default: disabled
+    };
+
+    // -------------------------------------------------------------------------
+    // Address layout
+    // -------------------------------------------------------------------------
+    data_packet_buffer_write_ptr_reg                WRITE_PTR @ 0x00;
+    data_packet_buffer_read_ptr_reg                 READ_PTR  @ 0x04;
+    data_packet_buffer_status_reg                   STATUS    @ 0x08;
+
+    crash_detection_speed_threshold_reg             CD_SPEED_THRESH @ 0x0C;
+    crash_detection_non_fatal_accel_threshold_reg   CD_NON_FATAL_ACCEL_THRESH @ 0x10;
+    crash_detection_fatal_accel_threshold_reg       CD_FATAL_ACCEL_THRESH @ 0x14;
+    crash_detection_angular_speed_threshold_reg     CD_ANGULAR_SPEED_THRESH @ 0x18;
+    crash_detection_enable_reg                      CD_EN @ 0x1C;
+    crash_detection_state_reset_reg                 CD_STATE_RST @ 0x20;
+
+    polling_module_en                               POLLING_EN @ 0x24;
+    data_packager_en                                DATA_PACAKGER_EN @ 0x28;
+};
